@@ -66,7 +66,7 @@ fun MainContent(
     val state = viewModel.masterScreenUIState.collectAsState()
 
 
-    Log.e(TAG, "receipes value: ${state.value.cats}")
+    Log.e(TAG, "cats value: ${state.value.cats}")
     remember {
         viewModel.catsRequested()
     }
@@ -75,28 +75,15 @@ fun MainContent(
             .fillMaxSize()
             .padding(12.dp),
     ) {
-        val (searchView, recyclerColumn) = createRefs()
+        val (recyclerColumn) = createRefs()
 
         /*if (recipes?.size == 0) {
             Text("loading")
             viewModel.receipeRequested()
         } else {*/
-        /*OutlinedTextField(
-            modifier = Modifier.constrainAs(searchView) {
-                top.linkTo(parent.top, margin = 5.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            },
-            value = state.value.searchValue,
-            maxLines = 1,
-            textStyle = TextStyle(color = Color.Blue, fontWeight = FontWeight.Bold),
-            placeholder = {
-                Text(text = "Search")
-            },
-            onValueChange = { value -> viewModel.searchChange(value)},
-        )*/
+
         LazyColumn(modifier = Modifier.constrainAs(recyclerColumn) {
-            top.linkTo(searchView.bottom)
+            top.linkTo(parent.top)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }) {
@@ -106,21 +93,5 @@ fun MainContent(
                 CatCard(onSeeDetailClicked, it)
             }
         }
-        //}
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchView(
-    modifier: Modifier = Modifier, state: MutableState<TextFieldValue>,
-    placeHolder: String
-) {
-
-    TextField(value = state.value,
-        onValueChange = { value -> state.value = value},
-        modifier = modifier
-    )
-
-
 }

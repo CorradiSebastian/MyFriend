@@ -1,11 +1,15 @@
-package com.sebastiancorradi.myfriend.ui.di
+package com.sebastiancorradi.myfriend.di
 
 import com.sebastiancorradi.myfriend.datasource.CatDataSource
 import com.sebastiancorradi.myfriend.datasource.ICatDataSource
-import com.sebastiancorradi.myfriend.datasource.ICatRepository
+import com.sebastiancorradi.myfriend.datasource.repository.ICatRepository
 import com.sebastiancorradi.myfriend.datasource.repository.local.CatLocalRepository
+import com.sebastiancorradi.myfriend.datasource.repository.local.ICatLocalRepository
+import com.sebastiancorradi.myfriend.datasource.repository.remote.CatRemoteRepository
+import com.sebastiancorradi.myfriend.datasource.repository.remote.ICatRemoteRepository
 import com.sebastiancorradi.myfriend.domain.CatsRequestedUseCase
 import com.sebastiancorradi.myfriend.domain.GetCatsUseCase
+import com.sebastiancorradi.myfriend.domain.InitDetailsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,10 +20,13 @@ import dagger.hilt.components.SingletonComponent
 object MainModule {
 
     @Provides
-    fun providesCatRepository(): ICatRepository = CatLocalRepository()
+    fun providesCatLocalRepository(): ICatLocalRepository = CatLocalRepository()
 
     @Provides
-    fun providesCatDataSource(catRepository: ICatRepository): ICatDataSource =
+    fun providesCatRemoteRepository(): ICatRemoteRepository = CatRemoteRepository()
+
+    @Provides
+    fun providesCatDataSource(catRepository: ICatRemoteRepository,): ICatDataSource =
         CatDataSource(catRepository)
 
 
@@ -30,6 +37,8 @@ object MainModule {
     @Provides
     fun provideCatsRequestedUseCase(getCatsUseCase: GetCatsUseCase): CatsRequestedUseCase =
         CatsRequestedUseCase(getCatsUseCase)
+
+    fun provideInitDetailScreen(): InitDetailsUseCase = InitDetailsUseCase()
 }
 
 

@@ -7,9 +7,9 @@ import javax.inject.Inject
 class GetCatsUseCase @Inject constructor(
     private val catDataSource: ICatDataSource,
 ) {
-    operator fun invoke(): List<Cat> {
+    suspend operator  fun invoke(): List<Cat> {
         val result = catDataSource.getCats()
-        return result
+        return result?: listOf()
     }
 }
 

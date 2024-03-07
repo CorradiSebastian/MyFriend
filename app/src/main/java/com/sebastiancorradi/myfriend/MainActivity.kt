@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.sebastiancorradi.myfriend.navigation.AppNavHost
+import com.sebastiancorradi.myfriend.navigation.NavigationItem
 import com.sebastiancorradi.myfriend.ui.master.MasterScreen
 import com.sebastiancorradi.myfriend.ui.theme.MyFriendTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,24 +28,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MasterScreen({ })
+                    AppNavHost(navController = rememberNavController(), startDestination = NavigationItem.Master.route)
+                    //MasterScreen({ })
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!", modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MyFriendTheme {
-        Greeting("Android")
     }
 }
