@@ -4,5 +4,5 @@ import com.sebastiancorradi.myfriend.datasource.data.CatsResponse
 
 
 interface ICatRepository {
-    suspend fun getCats(): CatsResponse?
+    suspend fun getCats(startFrom: Int = 0): CatsResponse?
 }

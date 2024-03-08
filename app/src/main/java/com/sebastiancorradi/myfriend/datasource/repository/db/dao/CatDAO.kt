@@ -9,8 +9,8 @@ import com.sebastiancorradi.myfriend.data.Cat
 
 @Dao
 interface CatDao {
-    @Query("SELECT * FROM Cat")
-    fun getAll(): List<Cat>
+    @Query("SELECT * FROM Cat ORDER BY internalId ASC LIMIT 10 OFFSET (:startFrom)")
+    fun getAll(startFrom:Int): List<Cat>
 
     @Query("SELECT * FROM Cat WHERE id = (:catId) limit 1")
     fun getCatById(catId: String): Cat?

@@ -10,8 +10,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity
 data class Cat(
+    @PrimaryKey(autoGenerate = true)
+    val internalId: Int = 0,
     @SerializedName("_id")
-    @PrimaryKey val id: String= "",
+    val id: String= "",
     val tags: List<String> = listOf(),
     val mimetype: String = "",
     val size: Int = 64591

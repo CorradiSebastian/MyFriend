@@ -149,4 +149,7 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+
+    //pull to refresh
+    implementation ("androidx.compose.material:material:1.7.0-alpha04")
 }

@@ -7,9 +7,9 @@ import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
 class CatRemoteRepository:ICatRemoteRepository {
-    override suspend fun getCats(): CatsResponse? {
+    override suspend fun getCats(startFrom: Int): CatsResponse? {
         try {
-            val cats = ApiClient.apiService.getCats(0, 10)
+            val cats = ApiClient.apiService.getCats(startFrom, 10)
             cats?.let {
                 return CatsResponse(success = true, cats = cats)
             }
