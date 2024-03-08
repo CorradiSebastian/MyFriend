@@ -39,10 +39,10 @@ fun DetailsScreen(
             modifier = Modifier.fillMaxSize().padding(12.dp),
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
-                Text("Id: ${state.value.cat?.tags.toString()}")
-                Text("Owner: ${state.value.cat?.owner}")
-                Text("Created At: ${state.value.cat?.createdAt}")
-                Text("Updated At: ${state.value.cat?.upatedAt}")
+                Text("Id: ${state.value.cat?.id.toString()}")
+                Text("Size: ${state.value.cat?.size}")
+                Text("Tags: ${state.value.cat?.tags.toString()}")
+                Text("Mimetype: ${state.value.cat?.mimetype}")
                 GlideImage(
                     model = context.getString(R.string.cat_URL) + it.id,
                     contentDescription = context.getString(R.string.cat_image_content_desription),

@@ -1,29 +1,34 @@
 package com.sebastiancorradi.myfriend.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.sebastiancorradi.myfriend.R
@@ -44,50 +49,106 @@ fun CatCard(displayDetails: (cat: Cat) -> Unit, cat: Cat) {
             //contentColor = Color.White  //Card content color,e.g.text
         )
     ) {
-        Column(modifier = Modifier
-            .padding(horizontal = 5.dp, vertical = 5.dp)) {
 
-
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    verticalArrangement = Arrangement.Top,
-
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 5.dp, vertical = 5.dp)
+                .fillMaxWidth()
+        ) {
+            ConstraintLayout(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+            ) {
+                val (mainCardRow) = createRefs()
+                Row(modifier = Modifier.constrainAs(mainCardRow) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }) {
+                    ConstraintLayout(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .fillMaxWidth(),
                     ) {
-                    Text(
-                        text = cat.owner,
-                        style = TextStyle(
-                            color = Color.Black,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                    Text(
-                        text = cat.tags.toString(),
-                        style = TextStyle(
-                            color = Color.Black,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                    Button(modifier = Modifier.wrapContentSize(), onClick = {
-                        displayDetails(cat)
-                    }) {
-                        Text(text = context.getString(R.string.see_details))
+                        val (image, textOwner, textTags, clickColumn) = createRefs()
+
+                        //image
+                        GlideImage(
+                            model = context.getString(R.string.cat_URL) + cat.id,
+                            contentDescription = context.getString(R.string.cat_image_content_desription),
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .clickable(onClick = { displayDetails(cat) })
+                                .width(110.dp)
+                                .height(110.dp)
+                                .padding(5.dp)
+                                .constrainAs(image) {
+                                    top.linkTo(parent.top)
+                                    start.linkTo(parent.start)
+                                },
+
+                            )
+                        Text(
+                            text = "Size: " + cat.size,
+                            style = TextStyle(
+                                color = Color.Black,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .constrainAs(textOwner) {
+                                    top.linkTo(parent.top)
+                                    start.linkTo(image.end)
+                                    end.linkTo(clickColumn.start)
+                                    width = Dimension.fillToConstraints
+                                }
+                                .padding(horizontal = 4.dp),
+                        )
+                        Text(
+                            text = "Tags: " + cat.tags.toString(),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = TextStyle(
+                                color = Color.Black,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp)
+                                .wrapContentWidth()
+                                .constrainAs(textTags) {
+                                    top.linkTo(textOwner.bottom)
+                                    start.linkTo(image.end)
+                                    end.linkTo(clickColumn.start)
+                                    width = Dimension.fillToConstraints
+                                },
+                        )
+                        ClickableText(
+                            modifier = Modifier
+                                .constrainAs(clickColumn) {
+                                    top.linkTo(parent.top)
+                                    end.linkTo(parent.end)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .wrapContentWidth(),
+                            text = AnnotatedString("..."),
+                            style = TextStyle(
+                                color = Color.DarkGray,
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                            onClick = { displayDetails(cat) },
+                        )
                     }
                 }
-                Spacer(Modifier.weight(1f))
-                //image
-                GlideImage(
-                    model = context.getString(R.string.cat_URL) + cat.id,
-                    contentDescription = context.getString(R.string.cat_image_content_desription),
-                    modifier = Modifier.padding(2.dp).clickable(onClick = {  }).size(50.dp),
-                )
 
             }
         }
     }
 }
-
 
 
 @Preview(showBackground = true)

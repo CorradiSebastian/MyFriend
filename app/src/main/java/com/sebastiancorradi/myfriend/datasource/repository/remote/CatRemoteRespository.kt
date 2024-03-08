@@ -4,6 +4,7 @@ import android.util.Log
 import com.sebastiancorradi.myfriend.datasource.api.ApiClient
 import com.sebastiancorradi.myfriend.datasource.data.CatsResponse
 import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 class CatRemoteRepository:ICatRemoteRepository {
     override suspend fun getCats(): CatsResponse? {
@@ -16,8 +17,13 @@ class CatRemoteRepository:ICatRemoteRepository {
         } catch (e: HttpException) {
             Log.e("sebas", "Exception: $e")
             return CatsResponse(errorCode = e.code(),
-                errorMessage = e.message(),
+                errorMessage = e.message,
                 success = false)
+        } catch (e: SocketTimeoutException) {
+            Log.e("sebas", "Exception: $e")
+            return CatsResponse(
+                errorCode = 400, errorMessage = e.message, success = false
+            )
         }
     }
 }

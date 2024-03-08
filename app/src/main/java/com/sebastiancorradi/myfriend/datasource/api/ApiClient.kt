@@ -16,8 +16,8 @@ object RetrofitClient {
         this.addInterceptor(intercepter)
             // time out setting
             .connectTimeout(3, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(25, TimeUnit.SECONDS)
+            .readTimeout(5, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
 
     }.build()
 

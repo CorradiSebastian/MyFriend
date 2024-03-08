@@ -5,4 +5,8 @@
     <string name="see_details">See Details</string>
     <string name="cat_URL">https://cataas.com/cat/</string>
     <string name="cat_image_content_desription">profile image</string>
+
+
+    <string name="elipsis">...</string>
+    <string name="clickable_elipsis">...</string>
 </resources>
