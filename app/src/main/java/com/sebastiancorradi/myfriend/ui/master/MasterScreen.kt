@@ -6,27 +6,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -67,8 +57,11 @@ fun MainContent(
     viewModel: MasterViewModel,
 ) {
     val state = viewModel.masterScreenUIState.collectAsState()
-    val refreshState = rememberPullRefreshState(refreshing = state.value.isLoading, onRefresh = {viewModel.catsRequested()} )
-    Log.e(TAG, "cats value: ${state.value.cats}")
+    Log.e("Sebas", "refreshing, MainContent isLoading vale: ${state.value.isLoading}")
+    val refreshState = rememberPullRefreshState(refreshing = state.value.isLoading, onRefresh = {viewModel.catsRequested()
+        Log.e("Sebas", "inside OnRefresh, isLoading vale: ${state.value.isLoading}")} )
+
+    //val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
     remember {
         viewModel.catsRequested()
     }
@@ -77,12 +70,7 @@ fun MainContent(
             .fillMaxSize()
             .padding(12.dp),
     ) {
-        val (recyclerColumn) = createRefs()
-
-        /*if (recipes?.size == 0) {
-            Text("loading")
-            viewModel.receipeRequested()
-        } else {*/
+        val (recyclerColumn, pullRefreshIndicator) = createRefs()
 
         LazyColumn(modifier = Modifier
             .constrainAs(recyclerColumn) {
@@ -97,5 +85,10 @@ fun MainContent(
                 CatCard(onSeeDetailClicked, it)
             }
         }
+        PullRefreshIndicator(refreshing = state.value.isLoading, state = refreshState, modifier = Modifier.constrainAs(pullRefreshIndicator){
+            top.linkTo(parent.top)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+         })
     }
 }

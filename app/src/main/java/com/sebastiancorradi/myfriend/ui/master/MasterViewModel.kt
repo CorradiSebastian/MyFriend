@@ -26,9 +26,10 @@ class MasterViewModel @Inject constructor() : ViewModel() {
         Log.e("Sebas", "catsRequested")
         _masterScreenUIState.value = _masterScreenUIState.value.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
-            Log.e("Sebas", "catsRequested inside launch, catsLoadedSize: ${_masterScreenUIState.value.cats.size}")
-            Log.e("Sebas", "catsRequested inside launch, catsLoadedNro: ${_masterScreenUIState.value.catsLoaded}")
+            _masterScreenUIState.emit(_masterScreenUIState.value)
+            Log.e("Sebas", "antes del delay isLoading vale: ${masterScreenUIState.value.isLoading}")
             delay(2500)
+            Log.e("Sebas", "depues del delay isLoading vale: ${masterScreenUIState.value.isLoading}")
             _masterScreenUIState.value = catsRequestedUseCase(_masterScreenUIState.value)
         }
     }

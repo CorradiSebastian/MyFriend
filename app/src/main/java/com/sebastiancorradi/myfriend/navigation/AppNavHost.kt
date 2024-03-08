@@ -39,17 +39,13 @@ fun AppNavHost(
         })) {
                 backStackEntry ->
             val cat = backStackEntry.arguments?.getParcelable<Cat>("cat")
-            Log.e("Sebas", "en el baile, cat: $cat")
-
             DetailsScreen(cat, viewModel = hiltViewModel<DetailsViewModel>())
         }
     }
 }
 
 fun navigateToDetails(cat: Cat){
-    Log.e("sebas", "cat: $cat")
     val json = Uri.encode(Gson().toJson(cat))
-    Log.e("Sebas", "Navigate to: ${Screen.DETAILS.name}" + json)
     _navController.navigate(Screen.DETAILS.name + "/$json")
 }
 

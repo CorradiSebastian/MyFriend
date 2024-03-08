@@ -152,4 +152,5 @@ dependencies {
 
     //pull to refresh
     implementation ("androidx.compose.material:material:1.7.0-alpha04")
+    implementation ("com.google.accompanist:accompanist-swiperefresh:0.27.0")
 }
