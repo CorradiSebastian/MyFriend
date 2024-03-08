@@ -16,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -53,16 +54,13 @@ fun displayAbout() {
 @Composable
 fun MainContent(
     onSeeDetailClicked: (cat: Cat) -> Unit,
-    //onSeeDetailClicked:() -> Unit,
     viewModel: MasterViewModel,
 ) {
     val state = viewModel.masterScreenUIState.collectAsState()
-    Log.e("Sebas", "refreshing, MainContent isLoading vale: ${state.value.isLoading}")
-    val refreshState = rememberPullRefreshState(refreshing = state.value.isLoading, onRefresh = {viewModel.catsRequested()
-        Log.e("Sebas", "inside OnRefresh, isLoading vale: ${state.value.isLoading}")} )
+    val refreshState = rememberPullRefreshState(refreshing = state.value.isLoading, onRefresh = {viewModel.catsRequested()} )
 
     //val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
-    remember {
+    rememberSaveable {
         viewModel.catsRequested()
     }
     ConstraintLayout(

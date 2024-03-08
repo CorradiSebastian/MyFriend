@@ -8,6 +8,7 @@ import javax.inject.Inject
 class CatsRequestedUseCase @Inject constructor(
     private val getCatsUseCase: GetCatsUseCase,
 ) {
+
     suspend operator fun invoke(state: MasterScreenUIState): MasterScreenUIState {
         val cats = getCatsUseCase(state.catsLoaded)
         val loadedCats = state.cats.toMutableList()

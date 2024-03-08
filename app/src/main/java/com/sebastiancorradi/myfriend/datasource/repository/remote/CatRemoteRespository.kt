@@ -15,12 +15,10 @@ class CatRemoteRepository:ICatRemoteRepository {
             }
             return CatsResponse(success = false)
         } catch (e: HttpException) {
-            Log.e("sebas", "Exception: $e")
             return CatsResponse(errorCode = e.code(),
                 errorMessage = e.message,
                 success = false)
         } catch (e: SocketTimeoutException) {
-            Log.e("sebas", "Exception: $e")
             return CatsResponse(
                 errorCode = 400, errorMessage = e.message, success = false
             )

@@ -39,7 +39,7 @@ fun AppNavHost(
         })) {
                 backStackEntry ->
             val cat = backStackEntry.arguments?.getParcelable<Cat>("cat")
-            DetailsScreen(cat, viewModel = hiltViewModel<DetailsViewModel>())
+            DetailsScreen(cat, viewModel = hiltViewModel<DetailsViewModel>(), handleBack = ::handleBack)
         }
     }
 }
@@ -48,7 +48,9 @@ fun navigateToDetails(cat: Cat){
     val json = Uri.encode(Gson().toJson(cat))
     _navController.navigate(Screen.DETAILS.name + "/$json")
 }
-
+fun handleBack(){
+    _navController.popBackStack()
+}
 class AssetParamType : NavType<Cat>(isNullableAllowed = false) {
     override fun get(bundle: Bundle, key: String): Cat? {
         return bundle.getParcelable(key)

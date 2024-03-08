@@ -22,16 +22,13 @@ class MasterViewModel @Inject constructor() : ViewModel() {
     private val _masterScreenUIState = MutableStateFlow(MasterScreenUIState())
     val masterScreenUIState: StateFlow<MasterScreenUIState> = _masterScreenUIState.asStateFlow()
 
-    fun catsRequested() {
-        Log.e("Sebas", "catsRequested")
+    fun catsRequested():Boolean {
         _masterScreenUIState.value = _masterScreenUIState.value.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
             _masterScreenUIState.emit(_masterScreenUIState.value)
-            Log.e("Sebas", "antes del delay isLoading vale: ${masterScreenUIState.value.isLoading}")
-            delay(2500)
-            Log.e("Sebas", "depues del delay isLoading vale: ${masterScreenUIState.value.isLoading}")
             _masterScreenUIState.value = catsRequestedUseCase(_masterScreenUIState.value)
         }
+        return true
     }
 
 
