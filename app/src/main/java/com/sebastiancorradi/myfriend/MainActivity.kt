@@ -15,6 +15,7 @@ import com.sebastiancorradi.myfriend.navigation.AppNavHost
 import com.sebastiancorradi.myfriend.navigation.NavigationItem
 import com.sebastiancorradi.myfriend.ui.master.MasterScreen
 import com.sebastiancorradi.myfriend.ui.theme.MyFriendTheme
+import com.sebastiancorradi.myfriend.ui.theme.lightGrayBackground
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,10 +27,9 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = lightGrayBackground//MaterialTheme.colorScheme.background
                 ) {
                     AppNavHost(navController = rememberNavController(), startDestination = NavigationItem.Master.route)
-                    //MasterScreen({ })
                 }
             }
         }
